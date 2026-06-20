@@ -7,7 +7,74 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+
+    <nav>
+        <h1>PushToMain</h1>
+    </nav>
+
+    <main>
+
+        <aside class="sidebar">
+
+            <button class="add-task-btn">+ Add New Task</button>
+
+            <div class="stat-cards">
+
+                <div class="stat-card">
+                    <h3>Total To Do</h3>
+                    <span class="count todo-count">0</span>
+                </div>
+
+                <div class="stat-card">
+                    <h3>Total In Progress</h3>
+                    <span class="count progress-count">0</span>
+                </div>
+
+                <div class="stat-card">
+                    <h3>Total Done Today</h3>
+                    <span class="count done-count">0</span>
+                </div>
+
+            </div>
+
+        </aside>
+
+        <section class="kanban-board">
+
+            <div class="kanban-col" id="col-todo">
+                <div class="col-header">
+                    <span class="col-icon todo-icon"></span>
+                    <h2>To Do</h2>
+                </div>
+                <div class="card-list" id="todo-list">
+                    <!-- cards here -->
+                </div>
+            </div>
+
+            <div class="kanban-col" id="col-progress">
+                <div class="col-header">
+                    <span class="col-icon progress-icon"></span>
+                    <h2>In Progress</h2>
+                </div>
+                <div class="card-list" id="progress-list">
+                    <!-- cards here -->
+                </div>
+            </div>
+
+            <div class="kanban-col" id="col-done">
+                <div class="col-header">
+                    <span class="col-icon done-icon"></span>
+                    <h2>Done</h2>
+                </div>
+                <div class="card-list" id="done-list">
+                    <!-- cards here -->
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
     <script src="script.js"></script>
 </body>
 </html>
