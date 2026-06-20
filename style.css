@@ -182,7 +182,7 @@ aside.sidebar {
     display: flex;
     flex-direction: column;
     gap: 7px;
-    min-height: 60px;
+    min-height: 800px;
 }
 
 .task-card {
@@ -387,4 +387,17 @@ aside.sidebar {
 
 .btn-submit:hover {
     background-color: #6d4eab;
+}
+
+.task-card.dragging{
+    opacity: 0.7;
+    cursor: grabbing;
+    border: 2px dashed var(--todo-accent);
+    background-color: #f5f3ff;
+}
+
+.card-list.drag-over{
+    border: 2px dashed var(--todo-accent);
+    border-radius: var(--radius-md);
+    background-color: #f5f3ff;
 }

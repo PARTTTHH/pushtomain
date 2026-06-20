@@ -1,5 +1,6 @@
-let tasks = [];
-let nextId = 1;
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+let nextId = JSON.parse(localStorage.getItem("nextId")) || 1;
+let draggedId = null;
 
 function addTask(title, description, tags, column){
     const task = {
@@ -11,6 +12,8 @@ function addTask(title, description, tags, column){
     };
     tasks.push(task);
     nextId++;
+    localStorage.setItem("nextId", nextId);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
     render();
 }
 
@@ -28,6 +31,17 @@ function createCard(task){
         </div>
     `;
 
+    card.draggable = true;
+
+    card.addEventListener("dragstart", () => {
+        draggedId = Number(card.dataset.id);
+        setTimeout(() => card.classList.add("dragging"), 0);
+    });
+
+    card.addEventListener("dragend", () => {
+        card.classList.remove("dragging");
+    });
+
     return card;
 }
 
@@ -42,6 +56,27 @@ function render(){
     });
     updateCounts();
 }
+
+document.querySelectorAll(".card-list").forEach(zone => {
+    zone.addEventListener("dragover", e => {
+        e.preventDefault();
+        zone.classList.add("drag-over");
+    });
+
+    zone.addEventListener("dragleave", () => {
+        zone.classList.remove("drag-over");
+    });
+
+    zone.addEventListener("drop", () => {
+        zone.classList.remove("drag-over");
+        const newColumn = zone.id.replace("-list", "");
+        const task = tasks.find(t => t.id == draggedId);
+        task.column = newColumn;
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        render();
+    });
+
+})
 
 let addTaskBtn = document.querySelector(".add-task-btn");
 const modalOverlay = document.getElementById('modalOverlay');
@@ -60,6 +95,7 @@ modalOverlay.addEventListener('click', (e) => {
 });
 
 document.querySelector("#submitTask").addEventListener("click", () => {
+    modalOverlay.classList.remove('show');
     const title = document.getElementById('task-title').value.trim();
     if(!title) return;
 
@@ -70,8 +106,6 @@ document.querySelector("#submitTask").addEventListener("click", () => {
 
     addTask(title, description, tags, column);
 
-    modalOverlay.classList.remove('show');
-
     document.getElementById('modalOverlay').classList.remove('show');
     document.getElementById('task-title').value = '';
     document.getElementById('task-desc').value = '';
@@ -79,10 +113,12 @@ document.querySelector("#submitTask").addEventListener("click", () => {
 });
 
 function updateCounts(){
-    document.getElementById('.todo-count').textContent = tasks.filter(t => t.column === 'todo').length;
+    document.querySelector('.todo-count').textContent = tasks.filter(t => t.column === 'todo').length;
 
-    document.getElementById('.progress-count').textContent = tasks.filter(t => t.column === 'progress').length;
+    document.querySelector('.progress-count').textContent = tasks.filter(t => t.column === 'progress').length;
 
-    document.getElementById('.done-count').textContent = tasks.filter(t => t.column === "done").length;
+    document.querySelector('.done-count').textContent = tasks.filter(t => t.column === "done").length;
 
 }
+
+render();
